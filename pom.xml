@@ -17,13 +17,6 @@
 		<java.version>15</java.version>
 	</properties>
 	<dependencies>
-		<!-- Faker -->
-		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<version>0.12</version>
-		</dependency>
-
 		<!-- Flatlaf JFormDesigner -->
 		<dependency>
 			<groupId>com.formdev</groupId>
