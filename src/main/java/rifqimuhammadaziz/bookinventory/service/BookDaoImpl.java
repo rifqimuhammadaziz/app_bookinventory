@@ -18,7 +18,7 @@ public class BookDaoImpl implements DaoService<Book> {
     @Override
     public List<Book> findAll() throws SQLException, ClassNotFoundException, IOException {
         List<Book> books = new ArrayList<>();
-        String QUERY = "SELECT id, username, fullname, gender, address, phonenumber, status FROM user";
+        String QUERY = "SELECT * FROM book";
         try (Connection connection = DatabaseConnection.createConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(QUERY)) {
                 try (ResultSet rs = ps.executeQuery()) { // result from query
@@ -59,8 +59,30 @@ public class BookDaoImpl implements DaoService<Book> {
     }
 
     @Override
-    public int addData(Book book) throws SQLException, ClassNotFoundException {
-        return 0;
+    public int addData(Book book) throws SQLException, ClassNotFoundException, IOException {
+        int result = 0;
+        String QUERY = "INSERT INTO book(code, title, writer, publisher, isbn, pages, buy_price, sell_price, date_of_entry, stock) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = DatabaseConnection.createConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(QUERY)) {
+                ps.setString(1, book.getCode());
+                ps.setString(2, book.getTitle());
+                ps.setString(3, book.getWriter());
+                ps.setString(4, book.getPublisher());
+                ps.setString(5, book.getIsbn());
+                ps.setInt(6, book.getPages());
+                ps.setDouble(7, book.getBuy_price());
+                ps.setDouble(8, book.getSell_price());
+                ps.setString(9, book.getDate_of_entry());
+                ps.setInt(10, book.getStock());
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                } else {
+                    connection.rollback();
+                }
+            }
+        }
+        return result;
     }
 
     @Override

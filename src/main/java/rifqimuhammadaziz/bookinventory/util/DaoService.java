@@ -14,7 +14,7 @@ public interface DaoService<T> {
 
     List<T> searchByName(String name) throws SQLException, ClassNotFoundException;
 
-    int addData(T t) throws SQLException, ClassNotFoundException;
+    int addData(T t) throws SQLException, ClassNotFoundException, IOException;
 
     int updateData(T t) throws SQLException, ClassNotFoundException;
 
