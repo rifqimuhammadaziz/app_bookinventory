@@ -30,9 +30,9 @@ public class BookDaoImpl implements DaoService<Book> {
                         book.setWriter(rs.getString("writer"));
                         book.setPublisher(rs.getString("publisher"));
                         book.setIsbn(rs.getString("isbn"));
-                        book.setPages(rs.getInt("isbn"));
+                        book.setPages(rs.getInt("pages"));
                         book.setBuy_price(rs.getDouble("buy_price"));
-                        book.setSell_price(rs.getDouble("buy_price"));
+                        book.setSell_price(rs.getDouble("sell_price"));
                         book.setDate_of_entry(rs.getString("date_of_entry"));
                         book.setStock(rs.getInt("stock"));
                         books.add(book);
