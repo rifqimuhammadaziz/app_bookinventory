@@ -25,7 +25,7 @@ public class MainForm extends JFrame{
     private JTextField txtSellPrice;
     private JTextField txtDateOfEntry;
     private JTextField txtStock;
-    private JButton btnNew;
+    private JButton btnAddNew;
     private JButton btnSave;
     private JButton btnReset;
     private JButton btnUpdate;
@@ -66,5 +66,45 @@ public class MainForm extends JFrame{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    public void beforeLogin() {
+        txtID.setEditable(false);
+        txtID.setEnabled(false);
+
+        txtBookCode.setEditable(false);
+        txtBookCode.setEnabled(false);
+
+        txtTitle.setEditable(false);
+        txtTitle.setEnabled(false);
+
+        txtWriter.setEditable(false);
+        txtWriter.setEnabled(false);
+
+        txtPublisher.setEditable(false);
+        txtPublisher.setEnabled(false);
+
+        txtISBN.setEditable(false);
+        txtISBN.setEnabled(false);
+
+        txtBuyPrice.setEditable(false);
+        txtBuyPrice.setEnabled(false);
+
+        txtSellPrice.setEditable(false);
+        txtSellPrice.setEnabled(false);
+
+        txtDateOfEntry.setEditable(false);
+        txtDateOfEntry.setEnabled(false);
+
+        txtStock.setEditable(false);
+        txtStock.setEnabled(false);
+
+        btnAddNew.setEnabled(false);
+        btnSave.setEnabled(false);
+        btnReset.setEnabled(false);
+        btnUpdate.setEnabled(false);
+
+        tableBook.setEnabled(false);
+        tableBook.setVisible(false);
     }
 }
