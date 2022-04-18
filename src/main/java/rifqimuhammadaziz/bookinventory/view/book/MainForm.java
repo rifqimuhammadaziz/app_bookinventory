@@ -4,8 +4,11 @@ import com.formdev.flatlaf.FlatLightLaf;
 import rifqimuhammadaziz.bookinventory.model.Book;
 import rifqimuhammadaziz.bookinventory.model.table.BookTableModel;
 import rifqimuhammadaziz.bookinventory.service.BookDaoImpl;
+import rifqimuhammadaziz.bookinventory.view.user.LoginForm;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -49,6 +52,13 @@ public class MainForm extends JFrame{
         bookTableModel = new BookTableModel(books);
         tableBook.setModel(bookTableModel);
         tableBook.setAutoCreateRowSorter(true);
+
+        // Button Login
+        loginButton.addActionListener(e -> {
+            LoginForm loginForm = new LoginForm();
+            loginForm.pack();
+            loginForm.setLocationRelativeTo(null);
+        });
     }
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
