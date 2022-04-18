@@ -1,6 +1,8 @@
 package rifqimuhammadaziz.bookinventory.view.user;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LoginForm extends JFrame{
     private JTextField textField1;
@@ -12,5 +14,12 @@ public class LoginForm extends JFrame{
     public LoginForm() {
         setContentPane(rootPanel);
         setVisible(true);
+
+        registerButton.addActionListener(e -> {
+            RegisterForm registerForm = new RegisterForm();
+            registerForm.pack();
+            registerForm.setLocationRelativeTo(null);
+            dispose();
+        });
     }
 }
