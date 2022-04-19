@@ -43,7 +43,7 @@
                   <text value="Username"/>
                 </properties>
               </component>
-              <component id="919c3" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+              <component id="919c3" class="javax.swing.JTextField" binding="txtUsername">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -69,7 +69,7 @@
                   <text value="Password"/>
                 </properties>
               </component>
-              <component id="6d24b" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+              <component id="25d9e" class="javax.swing.JPasswordField" binding="txtPassword">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -95,7 +95,7 @@
                   <text value="Retype Password"/>
                 </properties>
               </component>
-              <component id="6befc" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+              <component id="44a97" class="javax.swing.JPasswordField" binding="txtRetypePassword">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -131,7 +131,7 @@
                   <text value="Full Name"/>
                 </properties>
               </component>
-              <component id="45bce" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+              <component id="45bce" class="javax.swing.JTextField" binding="txtFullName">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -192,7 +192,7 @@
                   <text value="Address"/>
                 </properties>
               </component>
-              <component id="1deda" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+              <component id="1deda" class="javax.swing.JTextArea" binding="txtAddress">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="50"/>
@@ -218,7 +218,7 @@
                   <text value="Phone Number"/>
                 </properties>
               </component>
-              <component id="f2237" class="javax.swing.JTextField" binding="textField5" default-binding="true">
+              <component id="f2237" class="javax.swing.JTextField" binding="txtPhoneNumber">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -246,7 +246,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="4bc71" class="javax.swing.JButton" binding="registerButton" default-binding="true">
+              <component id="4bc71" class="javax.swing.JButton" binding="btnRegister">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -256,7 +256,7 @@
                   <text value="Register"/>
                 </properties>
               </component>
-              <component id="5cfbd" class="javax.swing.JButton" binding="resetButton" default-binding="true">
+              <component id="5cfbd" class="javax.swing.JButton" binding="btnReset">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
