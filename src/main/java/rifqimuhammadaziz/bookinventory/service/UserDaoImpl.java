@@ -4,6 +4,7 @@ import rifqimuhammadaziz.bookinventory.model.User;
 import rifqimuhammadaziz.bookinventory.util.DaoService;
 import rifqimuhammadaziz.bookinventory.util.DatabaseConnection;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -89,5 +90,36 @@ public class UserDaoImpl implements DaoService<User> {
     @Override
     public int deleteData(User user) throws SQLException, ClassNotFoundException {
         return 0;
+    }
+
+    public int loginUser(User user) throws SQLException, ClassNotFoundException, IOException {
+        int result = 0;
+        String QUERY = "SELECT * FROM user WHERE username = ? AND password = ? AND status = ?";
+        try (Connection connection = DatabaseConnection.createConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(QUERY)) {
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getPassword());
+                ps.setString(3, USER_ACTIVE);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        result = 1;
+                    } else {
+                        String CHECKPASSWORD = "SELECT * FROM user WHERE username = ? AND password = ?";
+                        try (PreparedStatement checkPassword = connection.prepareStatement(CHECKPASSWORD)){
+                            checkPassword.setString(1, user.getUsername());
+                            checkPassword.setString(2, user.getPassword());
+                            try (ResultSet rsCheckPassword = checkPassword.executeQuery()){
+                                if (rsCheckPassword.next()) {
+                                    JOptionPane.showMessageDialog(null, "Login Failed. User is NonActive", "Login Error", JOptionPane.ERROR_MESSAGE);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Login Failed, Password is Incorrect", "Login Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
