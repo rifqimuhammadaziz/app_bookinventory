@@ -7,8 +7,7 @@ import rifqimuhammadaziz.bookinventory.service.BookDaoImpl;
 import rifqimuhammadaziz.bookinventory.view.user.LoginForm;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,18 +30,17 @@ public class MainForm extends JFrame{
     private JButton btnAddNew;
     private JButton btnSave;
     private JButton btnReset;
-    private JButton btnUpdate;
+    private JButton btnEdit;
     private JLabel lblUsername;
     private JTextField txtPages;
 
     private BookDaoImpl bookDao;
     private List<Book> books;
     private BookTableModel bookTableModel;
-
-    public static MainForm Instance;
+    private Book selectedBook;
 
     public MainForm() {
-        afterLogin();
+        prepareForm();
 
         books = new ArrayList<>();
         bookDao = new BookDaoImpl();
@@ -59,6 +57,38 @@ public class MainForm extends JFrame{
         tableBook.setModel(bookTableModel);
         tableBook.setAutoCreateRowSorter(true);
 
+        // RootPanel Click
+        rootPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                tableBook.getSelectionModel().clearSelection();
+                prepareForm();
+            }
+        });
+
+        // Select Row Table
+        tableBook.getSelectionModel().addListSelectionListener(e -> {
+            if (!tableBook.getSelectionModel().isSelectionEmpty()) {
+                int selectedIndex = tableBook.convertRowIndexToModel(tableBook.getSelectedRow());
+                selectedBook = books.get(selectedIndex);
+                if (selectedBook != null) {
+                    prepareButtonForEdit();
+
+                    txtID.setText(String.valueOf(selectedBook.getId()));
+                    txtBookCode.setText(selectedBook.getCode());
+                    txtTitle.setText(selectedBook.getTitle());
+                    txtWriter.setText(selectedBook.getWriter());
+                    txtPublisher.setText(selectedBook.getPublisher());
+                    txtISBN.setText(selectedBook.getIsbn());
+                    txtPages.setText(String.valueOf(selectedBook.getPages()));
+                    txtBuyPrice.setText(String.valueOf(selectedBook.getBuy_price()));
+                    txtSellPrice.setText(String.valueOf(selectedBook.getSell_price()));
+                    txtDateOfEntry.setText(selectedBook.getDate_of_entry());
+                    txtStock.setText(String.valueOf(selectedBook.getStock()));
+                }
+            }
+        });
+
         // Button Login
         loginButton.addActionListener(e -> {
             LoginForm loginForm = new LoginForm();
@@ -69,24 +99,44 @@ public class MainForm extends JFrame{
         // Button Add New | Cancel
         btnAddNew.addActionListener(e -> {
             if (btnAddNew.getText().equals("Add New")) {
-                prepareTexfieldForAdd();
+                prepareButtonForAdd();
+                prepareTexfield();
             } else {
                 disableTexfield();
             }
         });
 
-        // Button Save
+        // Button Save | Update
         btnSave.addActionListener(e -> {
-            try {
-                addData();
-            } catch (SQLException | IOException | ClassNotFoundException ex) {
-                ex.printStackTrace();
+            if (btnSave.getText().equals("Save")) {
+                try {
+                    addData();
+                } catch (SQLException | IOException | ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+            } else if (btnSave.getText().equals("Update")) {
+                JOptionPane.showMessageDialog(this, "Ini Tombol Update");
             }
         });
 
         // Button Reset
         btnReset.addActionListener(e -> {
-            resetTextField();
+            if (btnReset.getText().equals("Reset")) {
+                resetTextField();
+            } else if (btnReset.getText().equals("Delete")) {
+                JOptionPane.showMessageDialog(this, "Ini Tombol Delete");
+            }
+        });
+
+        // Button Edit
+        btnEdit.addActionListener(e -> {
+            if (btnEdit.getText().equals("Edit")) {
+                prepareTexfield();
+                prepareButtonForUpdate();
+            } else if (btnEdit.getText().equals("Cancel")) {
+                prepareForm();
+                resetTextField();
+            }
         });
     }
 
@@ -107,62 +157,55 @@ public class MainForm extends JFrame{
         frame.setVisible(true);
     }
 
-    public void beforeLogin() {
-        txtID.setEditable(false);
-        txtID.setEnabled(false);
+    public void prepareForm() {
+        btnAddNew.setText("Add New");
+        btnSave.setText("Save");
+        btnReset.setText("Reset");
+        btnEdit.setText("Edit");
 
-        txtBookCode.setEditable(false);
-        txtBookCode.setEnabled(false);
-
-        txtTitle.setEditable(false);
-        txtTitle.setEnabled(false);
-
-        txtWriter.setEditable(false);
-        txtWriter.setEnabled(false);
-
-        txtPublisher.setEditable(false);
-        txtPublisher.setEnabled(false);
-
-        txtISBN.setEditable(false);
-        txtISBN.setEnabled(false);
-
-        txtBuyPrice.setEditable(false);
-        txtBuyPrice.setEnabled(false);
-
-        txtSellPrice.setEditable(false);
-        txtSellPrice.setEnabled(false);
-
-        txtDateOfEntry.setEditable(false);
-        txtDateOfEntry.setEnabled(false);
-
-        txtStock.setEditable(false);
-        txtStock.setEnabled(false);
-
-        btnAddNew.setEnabled(false);
-        btnSave.setEnabled(false);
-        btnReset.setEnabled(false);
-        btnUpdate.setEnabled(false);
-
-        tableBook.setEnabled(false);
-        tableBook.setVisible(false);
-    }
-
-    public void afterLogin() {
         btnAddNew.setEnabled(true);
         btnSave.setEnabled(false);
         btnReset.setEnabled(false);
-        btnUpdate.setEnabled(false);
+        btnEdit.setEnabled(false);
+
+        resetTextField();
+        disableTexfield();
 
         tableBook.setEnabled(true);
         tableBook.setVisible(true);
     }
 
-    public void prepareTexfieldForAdd() {
+    public void prepareButtonForAdd() {
+        resetTextField();
+
         btnAddNew.setText("Cancel");
         btnSave.setEnabled(true);
         btnReset.setEnabled(true);
         tableBook.setEnabled(false);
+    }
 
+    public void prepareButtonForEdit() {
+        btnAddNew.setEnabled(false);
+
+        btnReset.setText("Delete");
+        btnReset.setEnabled(true);
+
+        btnEdit.setText("Edit");
+        btnEdit.setEnabled(true);
+    }
+
+    public void prepareButtonForUpdate() {
+        btnSave.setText("Update");
+        btnSave.setEnabled(true);
+
+        btnEdit.setText("Cancel");
+        btnEdit.setEnabled(true);
+
+        btnReset.setText("Delete");
+        btnReset.setEnabled(true);
+    }
+
+    public void prepareTexfield() {
         txtBookCode.grabFocus();
         txtBookCode.setEditable(true);
         txtBookCode.setEnabled(true);
@@ -271,6 +314,7 @@ public class MainForm extends JFrame{
     }
 
     public void resetTextField() {
+        txtID.setText("");
         txtBookCode.grabFocus();
         txtBookCode.setText("");
         txtTitle.setText("");

@@ -409,7 +409,7 @@
               </component>
               <component id="c21b1" class="javax.swing.JButton" binding="btnReset">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="-1" height="50"/>
                   </grid>
                 </constraints>
@@ -419,16 +419,16 @@
                   <text value="Reset"/>
                 </properties>
               </component>
-              <component id="d7b10" class="javax.swing.JButton" binding="btnUpdate">
+              <component id="d7b10" class="javax.swing.JButton" binding="btnEdit">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="-1" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
                   <enabled value="false"/>
                   <font size="14" style="0"/>
-                  <text value="Update"/>
+                  <text value="Edit"/>
                 </properties>
               </component>
             </children>
