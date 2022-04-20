@@ -2,7 +2,6 @@ package rifqimuhammadaziz.bookinventory.view.book;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import rifqimuhammadaziz.bookinventory.model.Book;
-import rifqimuhammadaziz.bookinventory.model.User;
 import rifqimuhammadaziz.bookinventory.model.table.BookTableModel;
 import rifqimuhammadaziz.bookinventory.service.BookDaoImpl;
 import rifqimuhammadaziz.bookinventory.view.user.LoginForm;
@@ -34,6 +33,7 @@ public class MainForm extends JFrame{
     private JButton btnReset;
     private JButton btnUpdate;
     private JLabel lblUsername;
+    private JTextField txtPages;
 
     private BookDaoImpl bookDao;
     private List<Book> books;
@@ -66,13 +66,27 @@ public class MainForm extends JFrame{
             loginForm.setLocationRelativeTo(null);
         });
 
-        // Button Add New
+        // Button Add New | Cancel
         btnAddNew.addActionListener(e -> {
             if (btnAddNew.getText().equals("Add New")) {
                 prepareTexfieldForAdd();
             } else {
                 disableTexfield();
             }
+        });
+
+        // Button Save
+        btnSave.addActionListener(e -> {
+            try {
+                addData();
+            } catch (SQLException | IOException | ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Button Reset
+        btnReset.addActionListener(e -> {
+            resetTextField();
         });
     }
 
@@ -145,7 +159,11 @@ public class MainForm extends JFrame{
 
     public void prepareTexfieldForAdd() {
         btnAddNew.setText("Cancel");
+        btnSave.setEnabled(true);
+        btnReset.setEnabled(true);
+        tableBook.setEnabled(false);
 
+        txtBookCode.grabFocus();
         txtBookCode.setEditable(true);
         txtBookCode.setEnabled(true);
 
@@ -161,6 +179,9 @@ public class MainForm extends JFrame{
         txtISBN.setEditable(true);
         txtISBN.setEnabled(true);
 
+        txtPages.setEditable(true);
+        txtPages.setEnabled(true);
+
         txtBuyPrice.setEditable(true);
         txtBuyPrice.setEnabled(true);
 
@@ -174,8 +195,46 @@ public class MainForm extends JFrame{
         txtStock.setEnabled(true);
     }
 
+    public void addData() throws SQLException, IOException, ClassNotFoundException {
+        if (    txtBookCode.getText().trim().isEmpty() ||
+                txtTitle.getText().trim().isEmpty() ||
+                txtWriter.getText().trim().isEmpty() ||
+                txtPublisher.getText().trim().isEmpty() ||
+                txtISBN.getText().trim().isEmpty() ||
+                txtBuyPrice.getText().trim().isEmpty() ||
+                txtSellPrice.getText().trim().isEmpty() ||
+                txtDateOfEntry.getText().trim().isEmpty() ||
+                txtStock.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill form correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Book book = new Book();
+            book.setCode(txtBookCode.getText());
+            book.setTitle(txtTitle.getText());
+            book.setWriter(txtWriter.getText());
+            book.setPublisher(txtPublisher.getText());
+            book.setIsbn(txtISBN.getText());
+            book.setPages(Integer.valueOf(txtPages.getText()));
+            book.setBuy_price(Double.valueOf(txtBuyPrice.getText()));
+            book.setSell_price(Double.valueOf(txtSellPrice.getText()));
+            book.setDate_of_entry(txtDateOfEntry.getText());
+            book.setStock(Integer.valueOf(txtStock.getText()));
+
+            if (bookDao.addData(book) == 1) {
+                books.clear();
+                books.addAll(bookDao.findAll());
+                bookTableModel.fireTableDataChanged();
+                JOptionPane.showMessageDialog(this, "Success Add Book : " + txtTitle.getText(), "Success", JOptionPane.INFORMATION_MESSAGE);
+                resetTextField();
+                disableTexfield();
+            }
+        }
+    }
+
     public void disableTexfield() {
         btnAddNew.setText("Add New");
+        btnSave.setEnabled(false);
+        btnReset.setEnabled(false);
+        tableBook.setEnabled(true);
 
         txtID.setEditable(false);
         txtID.setEnabled(false);
@@ -195,6 +254,9 @@ public class MainForm extends JFrame{
         txtISBN.setEditable(false);
         txtISBN.setEnabled(false);
 
+        txtPages.setEditable(false);
+        txtPages.setEnabled(false);
+
         txtBuyPrice.setEditable(false);
         txtBuyPrice.setEnabled(false);
 
@@ -208,4 +270,17 @@ public class MainForm extends JFrame{
         txtStock.setEnabled(false);
     }
 
+    public void resetTextField() {
+        txtBookCode.grabFocus();
+        txtBookCode.setText("");
+        txtTitle.setText("");
+        txtWriter.setText("");
+        txtPublisher.setText("");
+        txtISBN.setText("");
+        txtPages.setText("");
+        txtBuyPrice.setText("");
+        txtSellPrice.setText("");
+        txtDateOfEntry.setText("");
+        txtStock.setText("");
+    }
 }
