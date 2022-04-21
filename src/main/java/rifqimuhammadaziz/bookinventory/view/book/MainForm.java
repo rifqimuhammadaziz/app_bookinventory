@@ -116,12 +116,13 @@ public class MainForm extends JFrame{
             }
         });
 
-        // Button Reset
+        // Button Reset | Delete
         btnReset.addActionListener(e -> {
             if (btnReset.getText().equals("Reset")) {
                 resetTextField();
             } else if (btnReset.getText().equals("Delete")) {
-                JOptionPane.showMessageDialog(this, "Ini Tombol Delete");
+                deleteData();
+                prepareForm();
             }
         });
 
@@ -318,6 +319,33 @@ public class MainForm extends JFrame{
             } catch (SQLException | ClassNotFoundException | IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public void deleteData() {
+        try {
+            int validate = JOptionPane.showConfirmDialog(
+                    null,
+                    "Are you sure to Delete Book : \n" + selectedBook.getCode() + " - " + selectedBook.getTitle(),
+                    "Delete Department",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            if (validate == JOptionPane.YES_OPTION) {
+                if (bookDao.deleteData(selectedBook) == 1) {
+                    books.clear();
+                    books.addAll(bookDao.findAll());
+                    bookTableModel.fireTableDataChanged();
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Book " + txtBookCode.getText() + " deleted.",
+                            "Delete Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else if (validate == JOptionPane.NO_OPTION) {
+                bookTableModel.fireTableDataChanged();
+            }
+        } catch (SQLException | ClassNotFoundException | IOException e) {
+            e.printStackTrace();
         }
     }
 

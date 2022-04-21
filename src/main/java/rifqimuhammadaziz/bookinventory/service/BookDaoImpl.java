@@ -114,7 +114,20 @@ public class BookDaoImpl implements DaoService<Book> {
     }
 
     @Override
-    public int deleteData(Book book) throws SQLException, ClassNotFoundException {
-        return 0;
+    public int deleteData(Book book) throws SQLException, IOException, ClassNotFoundException {
+        int result = 0;
+        String QUERY = "DELETE FROM book WHERE id = ?";
+        try (Connection connection = DatabaseConnection.createConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(QUERY)) {
+                ps.setInt(1, book.getId());
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                } else {
+                    connection.rollback();
+                }
+            }
+        }
+        return result;
     }
 }
