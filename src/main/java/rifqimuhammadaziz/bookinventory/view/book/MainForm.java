@@ -109,13 +109,10 @@ public class MainForm extends JFrame{
         // Button Save | Update
         btnSave.addActionListener(e -> {
             if (btnSave.getText().equals("Save")) {
-                try {
-                    addData();
-                } catch (SQLException | IOException | ClassNotFoundException ex) {
-                    ex.printStackTrace();
-                }
+                addData();
             } else if (btnSave.getText().equals("Update")) {
-                JOptionPane.showMessageDialog(this, "Ini Tombol Update");
+                updateData();
+                prepareForm();
             }
         });
 
@@ -135,7 +132,6 @@ public class MainForm extends JFrame{
                 prepareButtonForUpdate();
             } else if (btnEdit.getText().equals("Cancel")) {
                 prepareForm();
-                resetTextField();
             }
         });
     }
@@ -238,7 +234,7 @@ public class MainForm extends JFrame{
         txtStock.setEnabled(true);
     }
 
-    public void addData() throws SQLException, IOException, ClassNotFoundException {
+    public void addData() {
         if (    txtBookCode.getText().trim().isEmpty() ||
                 txtTitle.getText().trim().isEmpty() ||
                 txtWriter.getText().trim().isEmpty() ||
@@ -262,13 +258,65 @@ public class MainForm extends JFrame{
             book.setDate_of_entry(txtDateOfEntry.getText());
             book.setStock(Integer.valueOf(txtStock.getText()));
 
-            if (bookDao.addData(book) == 1) {
-                books.clear();
-                books.addAll(bookDao.findAll());
-                bookTableModel.fireTableDataChanged();
-                JOptionPane.showMessageDialog(this, "Success Add Book : " + txtTitle.getText(), "Success", JOptionPane.INFORMATION_MESSAGE);
-                resetTextField();
-                disableTexfield();
+            try {
+                if (bookDao.addData(book) == 1) {
+                    books.clear();
+                    books.addAll(bookDao.findAll());
+                    bookTableModel.fireTableDataChanged();
+                    JOptionPane.showMessageDialog(this, "Success Add Book : " + txtTitle.getText(), "Success", JOptionPane.INFORMATION_MESSAGE);
+                    resetTextField();
+                    disableTexfield();
+                }
+            } catch (SQLException | ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void updateData() {
+        if (    txtBookCode.getText().trim().isEmpty() ||
+                txtTitle.getText().trim().isEmpty() ||
+                txtWriter.getText().trim().isEmpty() ||
+                txtPublisher.getText().trim().isEmpty() ||
+                txtISBN.getText().trim().isEmpty() ||
+                txtBuyPrice.getText().trim().isEmpty() ||
+                txtSellPrice.getText().trim().isEmpty() ||
+                txtDateOfEntry.getText().trim().isEmpty() ||
+                txtStock.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill form correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            selectedBook.setCode(txtBookCode.getText());
+            selectedBook.setTitle(txtTitle.getText());
+            selectedBook.setWriter(txtWriter.getText());
+            selectedBook.setPublisher(txtPublisher.getText());
+            selectedBook.setIsbn(txtISBN.getText());
+            selectedBook.setPages(Integer.valueOf(txtPages.getText()));
+            selectedBook.setBuy_price(Double.valueOf(txtBuyPrice.getText()));
+            selectedBook.setSell_price(Double.valueOf(txtSellPrice.getText()));
+            selectedBook.setDate_of_entry(txtDateOfEntry.getText());
+            selectedBook.setStock(Integer.valueOf(txtStock.getText()));
+            try {
+                int validate = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure to Update Book : " + txtBookCode.getText(),
+                        "Update Book",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+                if (validate == JOptionPane.YES_OPTION) {
+                    if (bookDao.updateData(selectedBook) == 1) {
+                        books.clear();
+                        books.addAll(bookDao.findAll());
+                        bookTableModel.fireTableDataChanged();
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Book " + txtBookCode.getText() + " updated.",
+                                "Update Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            } catch (SQLException | ClassNotFoundException | IOException ex) {
+                ex.printStackTrace();
             }
         }
     }

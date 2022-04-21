@@ -86,8 +86,31 @@ public class BookDaoImpl implements DaoService<Book> {
     }
 
     @Override
-    public int updateData(Book book) throws SQLException, ClassNotFoundException {
-        return 0;
+    public int updateData(Book book) throws SQLException, ClassNotFoundException, IOException {
+        int result = 0;
+        String QUERY = "UPDATE book SET code=?, title=?, writer=?, publisher=?, isbn=?, pages=?, buy_price=?, sell_price=?, date_of_entry=?, stock=? WHERE id=?";
+        try (Connection connection = DatabaseConnection.createConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(QUERY)){
+                ps.setString(1, book.getCode());
+                ps.setString(2, book.getTitle());
+                ps.setString(3, book.getWriter());
+                ps.setString(4, book.getPublisher());
+                ps.setString(5, book.getIsbn());
+                ps.setInt(6, book.getPages());
+                ps.setDouble(7, book.getBuy_price());
+                ps.setDouble(8, book.getSell_price());
+                ps.setString(9, book.getDate_of_entry());
+                ps.setInt(10, book.getStock());
+                ps.setInt(11, book.getId());
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                } else {
+                    connection.rollback();
+                }
+            }
+        }
+        return result;
     }
 
     @Override

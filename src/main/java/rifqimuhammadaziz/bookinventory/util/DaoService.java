@@ -16,7 +16,7 @@ public interface DaoService<T> {
 
     int addData(T t) throws SQLException, ClassNotFoundException, IOException;
 
-    int updateData(T t) throws SQLException, ClassNotFoundException;
+    int updateData(T t) throws SQLException, ClassNotFoundException, IOException;
 
     int deleteData(T t) throws SQLException, ClassNotFoundException;
 
