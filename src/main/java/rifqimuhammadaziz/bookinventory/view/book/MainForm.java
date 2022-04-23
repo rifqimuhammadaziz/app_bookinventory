@@ -2,14 +2,17 @@ package rifqimuhammadaziz.bookinventory.view.book;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import rifqimuhammadaziz.bookinventory.model.Book;
+import rifqimuhammadaziz.bookinventory.model.User;
 import rifqimuhammadaziz.bookinventory.model.table.BookTableModel;
 import rifqimuhammadaziz.bookinventory.service.BookDaoImpl;
-import rifqimuhammadaziz.bookinventory.view.user.LoginForm;
+import rifqimuhammadaziz.bookinventory.view.user.LoginDialog;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +42,9 @@ public class MainForm extends JFrame{
     private BookTableModel bookTableModel;
     private Book selectedBook;
 
-    public MainForm() {
+    public MainForm(User user) {
         prepareForm();
+        System.out.println(user.getUsername());
 
         books = new ArrayList<>();
         bookDao = new BookDaoImpl();
@@ -91,7 +95,7 @@ public class MainForm extends JFrame{
 
         // Button Login
         loginButton.addActionListener(e -> {
-            LoginForm loginForm = new LoginForm();
+            LoginDialog loginForm = new LoginDialog();
             loginForm.pack();
             loginForm.setLocationRelativeTo(null);
         });
@@ -101,8 +105,9 @@ public class MainForm extends JFrame{
             if (btnAddNew.getText().equals("Add New")) {
                 prepareButtonForAdd();
                 prepareTexfield();
-            } else {
+            } else if (btnAddNew.getText().equals("Cancel")) {
                 disableTexfield();
+                resetTextField();
             }
         });
 
@@ -147,7 +152,7 @@ public class MainForm extends JFrame{
         UIManager.put( "Table.showHorizontalLines", true);
 
         JFrame frame = new JFrame("MainForm");
-        frame.setContentPane(new MainForm().rootPanel);
+        frame.setContentPane(new MainForm(new User()).rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -228,6 +233,9 @@ public class MainForm extends JFrame{
         txtSellPrice.setEditable(true);
         txtSellPrice.setEnabled(true);
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate now = LocalDate.now();
+        txtDateOfEntry.setText(dtf.format(now));
         txtDateOfEntry.setEditable(true);
         txtDateOfEntry.setEnabled(true);
 
