@@ -36,6 +36,7 @@ public class LoginForm extends JFrame{
                     if (userDao.loginUser(user) == 1) {
                         JOptionPane.showMessageDialog(this, "Login as " + txtUsername.getText() + " Success", "Success", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
+                        // Send User to MainForm
                     }
                 } catch (SQLException | ClassNotFoundException | IOException ex) {
                     ex.printStackTrace();

@@ -36,14 +36,20 @@ public class LoginDialog extends JDialog {
                 try {
                     if (userDao.loginUser(user) == 1) {
                         JOptionPane.showMessageDialog(this, "Login as " + txtUsername.getText() + " Success", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
-                        MainForm mainForm = new MainForm(user);
-                        mainForm.setVisible(true);
+                        new MainForm(user);
                     }
                 } catch (SQLException | ClassNotFoundException | IOException ex) {
                     ex.printStackTrace();
                 }
             }
         });
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("LoginDialog");
+        frame.setContentPane(new LoginDialog().rootPanel);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

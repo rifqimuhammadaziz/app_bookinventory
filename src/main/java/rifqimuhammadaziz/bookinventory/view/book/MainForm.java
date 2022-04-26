@@ -6,6 +6,7 @@ import rifqimuhammadaziz.bookinventory.model.User;
 import rifqimuhammadaziz.bookinventory.model.table.BookTableModel;
 import rifqimuhammadaziz.bookinventory.service.BookDaoImpl;
 import rifqimuhammadaziz.bookinventory.view.user.LoginDialog;
+import rifqimuhammadaziz.bookinventory.view.user.LoginForm;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -44,7 +45,9 @@ public class MainForm extends JFrame{
 
     public MainForm(User user) {
         prepareForm();
-        System.out.println(user.getUsername());
+        System.out.println(user);
+        lblUsername.setText(user.getUsername());
+        this.revalidate();
 
         books = new ArrayList<>();
         bookDao = new BookDaoImpl();
